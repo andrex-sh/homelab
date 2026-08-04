@@ -8,7 +8,7 @@ services:
     volumes:
       - /opt/containers/jellyfin/config:/config
       - /opt/containers/jellyfin/cache:/cache
-      - /storage/media:/media:ro
+      - /mnt/storage/media:/media:ro
 
     restart: unless-stopped
 
@@ -26,6 +26,6 @@ services:
 
     volumes:
       - /opt/containers/qbittorrent/config:/config
-      - /storage/media:/media
+      - /mnt/storage/media:/media
 
     restart: unless-stopped
