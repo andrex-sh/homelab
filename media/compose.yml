@@ -79,3 +79,20 @@ services:
       - /mnt/storage/media:/media
 
     restart: unless-stopped
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+
+    network_mode: host
+
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+
+    volumes:
+      - /opt/containers/bazarr/config:/config
+      - /mnt/storage/media:/media
+
+    restart: unless-stopped
