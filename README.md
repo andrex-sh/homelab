@@ -51,3 +51,22 @@ One-time wiring that can't live in compose. Everything is host-networked, so ser
 6. **Bazarr** (`:6767`) - set authentication; under Settings -> Sonarr and Settings -> Radarr, point at `localhost:8989` / `localhost:7878` with each app's API key. Under Settings -> Languages, define a languages profile and set it as the default for series and movies. Under Settings -> Providers, add at least one subtitle provider (OpenSubtitles.com needs a free account).
 7. **Jellyfin** (`:8096`) - add libraries pointing at `/media/shows` and `/media/movies`.
 8. **Syncthing** (`:8384`) - set a GUI username/password; add `/media` as a synced folder and configure remote devices as needed.
+
+## Remote access
+
+`tailscale/` is a separate stack that gives the host itself a Tailscale
+identity. Since every service on this box is host-networked, once Tailscale
+is up any service (media stack today, other stacks later) is reachable at
+`<tailscale-ip-or-hostname>:<port>` from anywhere - no per-service setup.
+
+1. Generate a reusable, non-ephemeral auth key at
+   https://login.tailscale.com/admin/settings/keys.
+2. `cp tailscale/.env.example tailscale/.env` and fill in `TS_AUTHKEY`.
+3. `cd tailscale && docker compose up -d`
+4. Find the box's address with `docker exec tailscale tailscale status`, then
+   reach any service from the Ports table above, e.g.
+   `http://homelab:8096` for Jellyfin.
+
+Friends need to be added to the tailnet (or invited as shared users) via the
+Tailscale admin console before they can reach any game server hosted on this
+box - that's an account-level step, not something this repo configures.
