@@ -1,4 +1,17 @@
 services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+
+    network_mode: host
+
+    volumes:
+      - /opt/containers/jellyfin/config:/config
+      - /opt/containers/jellyfin/cache:/cache
+      - /mnt/storage/media:/media:ro
+
+    restart: unless-stopped
+
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent

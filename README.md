@@ -7,6 +7,7 @@ Docker Compose definitions for my self-hosted services.
 | Service | Port |
 |-|-|
 | qBittorrent | 8080 |
+| Jellyfin | 8096 |
 | Radarr | 7878 |
 | Sonarr | 8989 |
 | Prowlarr | 9696 |
@@ -17,6 +18,12 @@ Docker Compose definitions for my self-hosted services.
 ## Host setup
 
 Config directories must exist before first start.
+
+Jellyfin's official image runs as root, so it only needs the directories:
+
+```bash
+sudo mkdir -p /opt/containers/jellyfin/{config,cache}
+```
 
 The LinuxServer.io containers run as `1000:1000` and will fail to write unless ownership matches:
 
@@ -42,7 +49,8 @@ One-time wiring that can't live in compose. Everything is host-networked, so ser
 4. **Prowlarr -> Settings -> Apps** - add Sonarr (`http://localhost:8989`) and Radarr (`http://localhost:7878`) using each app's API key from Settings → General. Indexers then sync automatically.
 5. **qBittorrent** (`:8080`) - confirm the default save path is under `/media`.
 6. **Bazarr** (`:6767`) - set authentication; under Settings -> Sonarr and Settings -> Radarr, point at `localhost:8989` / `localhost:7878` with each app's API key. Under Settings -> Languages, define a languages profile and set it as the default for series and movies. Under Settings -> Providers, add at least one subtitle provider (OpenSubtitles.com needs a free account).
-7. **Syncthing** (`:8384`) - set a GUI username/password; add `/media` as a synced folder and configure remote devices as needed.
+7. **Jellyfin** (`:8096`) - add libraries pointing at `/media/shows` and `/media/movies`.
+8. **Syncthing** (`:8384`) - set a GUI username/password; add `/media` as a synced folder and configure remote devices as needed.
 
 ## Remote access
 
@@ -57,7 +65,7 @@ is up any service (media stack today, other stacks later) is reachable at
 3. `cd tailscale && docker compose up -d`
 4. Find the box's address with `docker exec tailscale tailscale status`, then
    reach any service from the Ports table above, e.g.
-   `http://homelab:8989` for Sonarr.
+   `http://homelab:8096` for Jellyfin.
 
 Friends need to be added to the tailnet (or invited as shared users) via the
 Tailscale admin console before they can reach any game server hosted on this
