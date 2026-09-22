@@ -36,6 +36,10 @@ services:
 
     network_mode: host
 
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+
     environment:
       - PUID=1000
       - PGID=1000
@@ -51,6 +55,10 @@ services:
     container_name: sonarr
 
     network_mode: host
+
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
 
     environment:
       - PUID=1000
@@ -69,6 +77,10 @@ services:
 
     network_mode: host
 
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+
     environment:
       - PUID=1000
       - PGID=1000
@@ -85,6 +97,10 @@ services:
     container_name: bazarr
 
     network_mode: host
+
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
 
     environment:
       - PUID=1000
